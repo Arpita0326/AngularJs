@@ -1,6 +1,4 @@
-# AngularJs
-
-You're welcome! Here’s a **README.md** template you can use for your **AngularJS project**:  
+# AngularJs  
 
 ---
 
