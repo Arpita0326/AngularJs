@@ -1,20 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="userApp" ng-controller="UserController" ng-class="{dark: isDark}">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AngularJS Example</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive User Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+  <script src="app.js"></script>
 </head>
-<body ng-app="myApp" ng-controller="UserController">
-    <h2>User List</h2>
-    <input type="text" ng-model="searchText" placeholder="Search users...">
-    <ul>
-        <li ng-repeat="user in users | filter: searchText">
-            {{ user.name }} - {{ user.email }}
-        </li>
-    </ul>
-    <script src="app.js"></script>
+<body>
+  <div class="container">
+    <button class="theme-toggle" ng-click="toggleTheme()">
+      <i class="fas" ng-class="isDark ? 'fa-sun' : 'fa-moon'"></i>
+      {{ isDark ? ' Light Mode' : ' Dark Mode' }}
+    </button>
+    <h1>User Dashboard</h1>
+
+    <div class="form-section">
+      <input type="text" placeholder="Enter name" ng-model="newUser.name">
+      <input type="email" placeholder="Enter email" ng-model="newUser.email">
+      <button ng-click="addUser()"><i class="fa fa-user-plus"></i> Add User</button>
+    </div>
+
+    <div class="filter-section">
+      <input type="text" ng-model="searchQuery" placeholder="Search users">
+      <select ng-model="sortType">
+        <option value="name">Sort by Name</option>
+        <option value="email">Sort by Email</option>
+      </select>
+    </div>
+
+    <p><strong>Total Users:</strong> {{ users.length }}</p>
+
+    <div class="card" ng-repeat="user in users | filter:searchQuery | orderBy:sortType">
+      <p><strong>{{ user.name }}</strong></p>
+      <p>{{ user.email }}</p>
+      <p>Status: 
+        <span ng-class="{'status': true, 'active': user.active, 'inactive': !user.active}" 
+              ng-click="user.active = !user.active">
+          {{ user.active ? 'Active' : 'Inactive' }}
+        </span>
+      </p>
+      <button class="delete-btn" ng-click="deleteUser($index)"><i class="fa fa-trash"></i> Delete</button>
+    </div>
+  </div>
 </body>
 </html>
